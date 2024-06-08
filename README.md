@@ -62,7 +62,7 @@
 
 选择适合的技术和工具：
 
-- **前端框架**：Vue.js +pinia+vue-router axios sass
+- **前端框架**：Vite +pinia+vue-router+axios+sass
 - **后端框架**：Egg.js
 - **数据库**：MySQL
 - **其他工具**：Git（版本控制），Nginx（服务器）。
