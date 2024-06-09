@@ -19,4 +19,9 @@ module.exports = {
     enable: true,
     package: 'egg-validate',
   },
+  // 接口文档
+  swaggerdoc: {
+    enable: true,
+    package: 'egg-swagger-doc',
+  },
 };

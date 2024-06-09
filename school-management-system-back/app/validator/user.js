@@ -1,12 +1,14 @@
+// app/validator/user.js
+
 module.exports = {
   register: {
-    username: { type: 'string', required: true, min: 5, max: 20 },
-    password: { type: 'string', required: true, min: 6, max: 20 },
-    confirmPassword: { type: 'string', required: true, min: 6, max: 20 },
-    role: { type: 'enum', values: [ 'admin', 'teacher', 'student', 'parent' ], required: true },
+    username: { type: 'string', required: true, allowEmpty: false },
+    password: { type: 'string', required: true, allowEmpty: false },
+    confirmPassword: { type: 'string', required: true, allowEmpty: false },
+    role: { type: 'string', required: true, allowEmpty: false, enum: [ 'admin', 'teacher', 'student', 'parent' ] },
   },
   login: {
-    username: { type: 'string', required: true },
-    password: { type: 'string', required: true },
+    username: { type: 'string', required: true, allowEmpty: false },
+    password: { type: 'string', required: true, allowEmpty: false },
   },
 };

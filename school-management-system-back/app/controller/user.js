@@ -1,7 +1,18 @@
+/* eslint-disable jsdoc/check-tag-names */
 const { Controller } = require('egg');
 const userValidator = require('../validator/user');
 
+/**
+ * @Controller User Management
+ */
 class UserController extends Controller {
+  /**
+   * @summary Register a new user
+   * @description Register a new user with username, password and role
+   * @router post register
+   * @request body registerRequest *body
+   * @response 200 baseResponse Registration success
+   */
   async register() {
     const { ctx } = this;
     const { username, password, confirmPassword, role } = ctx.request.body;
@@ -19,6 +30,13 @@ class UserController extends Controller {
     ctx.success({ message: '注册成功', data: newUser });
   }
 
+  /**
+   * @summary User login
+   * @description Login with username and password
+   * @router post login
+   * @request body loginRequest *body
+   * @response 200 baseResponse Login success
+   */
   async login() {
     const { ctx } = this;
     const { username, password } = ctx.request.body;

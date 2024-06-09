@@ -70,6 +70,24 @@ module.exports = appInfo => {
     },
   };
 
+  config.swaggerdoc = {
+    dirScanner: './app/controller', // 自动扫描的控制器目录
+    apiInfo: {
+      title: 'School Management API', // 接口文档标题
+      description: 'API documentation for the school management system', // 接口文档描述
+      version: '1.0.0', // 接口文档版本
+    },
+    schemes: [ 'http', 'https' ], // 接口访问协议
+    consumes: [ 'application/json' ], // 消费的请求格式
+    produces: [ 'application/json' ], // 生成的响应格式
+    enableSecurity: false, // 是否启用安全认证
+    routerMap: true, // 是否自动生成路由
+    enable: true, // 是否启用插件
+    swaggerOptions: { // 追加swagger-jsdoc的所有配置项，可选
+      output: '../app/contract/swagger.json', // swagger 生成文件路径
+    },
+  };
+
   return {
     ...config,
     ...userConfig,
