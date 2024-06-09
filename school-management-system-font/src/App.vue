@@ -1,28 +1,13 @@
 <template>
-    <el-container class="page-container">
-      <side-bar/>
-      <el-container>
-        <el-header>Header</el-header>
-        <el-main><router-view></router-view></el-main>
-        <el-footer>Footer</el-footer>
-      </el-container>
-    </el-container>
+  <div class="page-container">
+    <router-view />
+  </div>
 </template>
 
-<script>
-import SideBar from '@/components/side-bar.vue'
-export default{
-  components:{
-    SideBar
-  }
-}
-</script>
 
 <style lang="scss" scoped>
 .page-container{
   height: 100vh;
-
-  
 }
 
 .el-aside{
