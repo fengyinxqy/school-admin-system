@@ -14,11 +14,25 @@ module.exports = appInfo => {
   config.keys = appInfo.name + '_1717858280040_6228';
 
   // add your middleware config here
-  config.middleware = [];
+  config.middleware = [ 'error' ];
 
   // add your user config here
   const userConfig = {
     // myAppName: 'egg',
+  };
+
+  // 跨域配置
+  config.security = {
+    csrf: {
+      enable: false,
+      ignoreJSON: true,
+    },
+    domainWhiteList: [ 'http://127.0.0.1' ],
+  };
+  config.cors = {
+    origin: '*',
+    credentials: true,
+    allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH',
   };
 
   config.sequelize = {

@@ -2,9 +2,8 @@
  * @param {Egg.Application} app - egg application
  */
 module.exports = app => {
-  const { router, controller } = app;
-  router.get('/', controller.home.index);
-
+  // 导入路由文件
+  require('./router/index')(app);
 
   app.beforeStart(async () => {
     // 在开发环境中使用 { alter: true } 以便自动更新表结构，生产环境建议使用 { force: false }
