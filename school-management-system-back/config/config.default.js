@@ -32,6 +32,10 @@ module.exports = appInfo => {
   // add your middleware config here
   config.middleware = [ 'error' ];
 
+  config.error = {
+    match: '/api/v1',
+  };
+
   // add your user config here
   const userConfig = {
     // myAppName: 'egg',

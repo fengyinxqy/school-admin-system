@@ -1,9 +1,12 @@
 const { Controller } = require('egg');
+const userValidator = require('../validator/user');
 
 class UserController extends Controller {
   async register() {
     const { ctx } = this;
     const { username, password, confirmPassword, role } = ctx.request.body;
+
+    ctx.validate(userValidator.register);
 
     // 验证两个密码是否相同
     if (password !== confirmPassword) {
@@ -19,6 +22,8 @@ class UserController extends Controller {
   async login() {
     const { ctx } = this;
     const { username, password } = ctx.request.body;
+
+    ctx.validate(userValidator.login);
 
     const user = await ctx.service.user.login({ username, password });
 
