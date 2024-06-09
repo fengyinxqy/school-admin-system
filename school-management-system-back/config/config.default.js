@@ -13,6 +13,22 @@ module.exports = appInfo => {
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1717858280040_6228';
 
+  config.jwt = {
+    secret: '6x6q6y',
+    sign: {
+      expiresIn: 8 * (60 * 60),
+    },
+  };
+
+  config.jwtAuth = {
+    ignore: [
+      '/',
+      '/api/v1/user/login',
+      '/api/v1/user/register',
+      '/api/v1/user/logout',
+    ],
+  };
+
   // add your middleware config here
   config.middleware = [ 'error' ];
 

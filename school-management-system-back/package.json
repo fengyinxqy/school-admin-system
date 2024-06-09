@@ -13,6 +13,7 @@
     "egg-onerror": "^2.2.0",
     "egg-scripts": "2",
     "egg-sequelize": "^6.0.0",
+    "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.10.0"
   },
   "devDependencies": {

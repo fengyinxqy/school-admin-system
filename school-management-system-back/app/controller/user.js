@@ -15,6 +15,15 @@ class UserController extends Controller {
 
     ctx.success({ message: '注册成功', data: newUser });
   }
+
+  async login() {
+    const { ctx } = this;
+    const { username, password } = ctx.request.body;
+
+    const user = await ctx.service.user.login({ username, password });
+
+    ctx.success({ message: '登录成功', data: user });
+  }
 }
 
 module.exports = UserController;

@@ -5,7 +5,8 @@ module.exports = app => {
 
   // 根路由
   router.get('/', controller.home.index);
-  router.post('/register', controller.user.register);
+
+  require('./user')(app);
 
   // 模块路由
   // require('./module1')(app);

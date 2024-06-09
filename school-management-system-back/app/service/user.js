@@ -1,5 +1,6 @@
 const { Service } = require('egg');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 class UserService extends Service {
   async register({ username, password, role }) {
@@ -25,6 +26,41 @@ class UserService extends Service {
     this.logger.info(newUser.toJSON());
 
     return newUser.toJSON();
+  }
+
+  // 用户登录方法
+  async login({ username, password }) {
+
+    const { ctx } = this;
+
+    // 查找用户
+    const user = await ctx.model.Users.findOne({ where: { username } });
+    if (!user) {
+      ctx.throw(400, '用户名不存在');
+    }
+
+    // 验证密码
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      ctx.throw(400, '密码错误');
+    }
+
+    const token = jwt.sign(
+      { id: user.id, username: user.username, role: user.role },
+      this.config.jwt.secret,
+      { expiresIn: '8h' } // 1小时过期
+    );
+    ctx.cookies.set('token', token, {
+      maxAge: 8 * 60 * 60 * 1000,
+      httpOnly: false,
+      signed: true,
+    });
+    ctx.session.userId = user.id;
+
+    // 不返回密码
+    const userInfo = user.toJSON();
+    delete userInfo.password;
+    return userInfo;
   }
 }
 
