@@ -25,12 +25,19 @@ module.exports = appInfo => {
       '/',
       '/api/v1/user/login',
       '/api/v1/user/register',
-      '/api/v1/user/logout',
     ],
   };
 
   // add your middleware config here
-  config.middleware = [ 'error' ];
+  config.middleware = [ 'error', 'auth' ];
+
+  config.auth = {
+    enable: true,
+    ignore: [
+      '/api/v1/login',
+      '/api/v1/register',
+    ],
+  };
 
   config.error = {
     match: '/api/v1',

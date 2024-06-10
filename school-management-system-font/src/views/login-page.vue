@@ -100,8 +100,10 @@
 import { ref,getCurrentInstance } from 'vue';
 import { Avatar, Lock } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus';
+import { useUserStore } from '@/stores/user.js'
 
 const { proxy } = getCurrentInstance();
+const userStore = useUserStore();
 
 const form = ref({
   username:'',
@@ -126,8 +128,12 @@ const submitForm = () => {
     if (valid) {
       // 这里处理表单提交逻辑
       proxy.$axios.post('/login', form.value).then((res) => {
-        console.log(res);
+        const userInfo = res.data;
+        // 存入到本地
+        userStore.setUserInfo(userInfo);
+        localStorage.setItem('userInfo', JSON.stringify(userInfo));
         ElMessage.success('登录成功');
+        proxy.$router.push('/');
       })
     } else {
       ElMessage.error('表单验证失败');

@@ -3,8 +3,19 @@
     <router-view />
   </div>
 </template>
+<script setup>
+import { onMounted } from 'vue';
+import { useUserStore } from './stores/user';
 
+const userStore = useUserStore();
 
+onMounted(() => {
+  const localUserInfo = localStorage.getItem('userInfo');
+  if (localUserInfo) {
+    userStore.setUserInfo(JSON.parse(localUserInfo));
+  }
+});
+</script>
 <style lang="scss" scoped>
 .page-container{
   height: 100vh;

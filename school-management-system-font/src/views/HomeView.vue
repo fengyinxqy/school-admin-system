@@ -4,7 +4,7 @@
   >
     <side-bar />
     <el-container>
-      <el-header>Header</el-header>
+      <header-area />
       <el-main>
         <!-- <router-view /> -->
       </el-main>
@@ -14,6 +14,8 @@
 </template>
 
 <script setup>
+import SideBar from '@/components/side-bar.vue'
+import HeaderArea from '@/components/header-area.vue';
 </script>
 
 <style lang="scss" scoped>

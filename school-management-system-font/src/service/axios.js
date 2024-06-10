@@ -1,6 +1,7 @@
 // src/services/axios.js
 
 import axios from "axios";
+import { ElMessage } from "element-plus";
 import Cookies from "js-cookie";
 
 axios.defaults.withCredentials = true;
@@ -17,6 +18,7 @@ instance.interceptors.request.use(
   (config) => {
     // 在发送请求之前从 cookie 中读取 token
     const token = Cookies.get("token");
+    console.log(token);
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -40,6 +42,7 @@ instance.interceptors.response.use(
       // 未授权，重定向到登录页
       window.location.href = "/login";
     }
+    ElMessage.error(error.message);
     return Promise.reject(error);
   }
 );

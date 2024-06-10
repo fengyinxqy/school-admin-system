@@ -1,7 +1,6 @@
 /* eslint-disable jsdoc/check-tag-names */
 const { Controller } = require('egg');
 const userValidator = require('../validator/user');
-
 /**
  * @Controller User Management
  */
