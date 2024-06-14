@@ -29,7 +29,7 @@ module.exports = appInfo => {
   };
 
   // add your middleware config here
-  config.middleware = [ 'error', 'auth' ];
+  config.middleware = [ 'error' ];
 
   config.auth = {
     enable: true,

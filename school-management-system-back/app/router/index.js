@@ -7,6 +7,7 @@ module.exports = app => {
   router.get('/', controller.home.index);
 
   require('./user')(app);
+  require('./teacher')(app);
 
   // 模块路由
   // require('./module1')(app);

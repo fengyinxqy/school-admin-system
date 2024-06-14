@@ -18,7 +18,6 @@ instance.interceptors.request.use(
   (config) => {
     // 在发送请求之前从 cookie 中读取 token
     const token = Cookies.get("token");
-    console.log(token);
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -38,12 +37,13 @@ instance.interceptors.response.use(
   },
   (error) => {
     // 对响应错误做些什么
-    if (error.response && error.response.status === 401) {
+    const { response } = error;
+    if (response && response.data.code === 401) {
       // 未授权，重定向到登录页
       window.location.href = "/login";
     }
-    ElMessage.error(error.message);
-    return Promise.reject(error);
+    ElMessage.error(response.data.message);
+    return Promise.reject(response.data);
   }
 );
 
