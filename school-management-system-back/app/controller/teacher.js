@@ -37,6 +37,36 @@ class TeacherController extends Controller {
     ctx.success({ message: '创建成功', data: result });
   }
 
+  async updateTeacher() {
+    const { ctx, service } = this;
+    const { id, subject } = ctx.request.body;
+
+
+    ctx.validate({
+      id: { type: 'string', required: true },
+      subject: { type: 'string', required: true },
+    });
+
+    const result = await service.teacher.updateTeacher({ id, subject });
+    this.logger.info(result);
+    ctx.success({ message: '更新成功' });
+  }
+
+  async deleteTeacher() {
+    const { ctx } = this;
+    const { id } = ctx.params;
+
+    try {
+      const result = await ctx.service.teacher.deleteTeacher(id);
+      this.logger.info(result);
+      ctx.success({ message: '删除成功' });
+    } catch (error) {
+      ctx.body = {
+        message: error.message,
+      };
+      ctx.status = error.status || 500;
+    }
+  }
 }
 
 module.exports = TeacherController;

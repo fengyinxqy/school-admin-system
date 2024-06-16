@@ -31,6 +31,52 @@ class TeacherService extends Service {
     await transaction.commit();
     return { teacher };
   }
+
+  async updateTeacher({ id, subject }) {
+    const { ctx, app } = this;
+
+    const transaction = await ctx.model.transaction();
+
+    const teacher = await app.model.Teachers.findOne({ where: { id } });
+
+    if (!teacher) {
+      await transaction.rollback();
+      ctx.throw(404, '教师不存在');
+    }
+
+    teacher.subject = subject;
+    await teacher.save({ transaction });
+    await transaction.commit();
+    return { teacher };
+  }
+
+  async deleteTeacher(userId) {
+    const { ctx, app } = this;
+    const transaction = await ctx.model.transaction();
+
+    const teacher = await app.model.Teachers.findOne({ where: { id: userId } });
+    if (!teacher) {
+      await transaction.rollback();
+      ctx.throw(404, '教师信息不存在');
+    }
+
+    const user = await app.model.Users.findByPk(teacher.user_id);
+
+    if (!user) {
+      await transaction.rollback();
+      ctx.throw(404, '用户不存在');
+    }
+
+
+    // 删除教师信息
+    await teacher.destroy({ transaction });
+
+    // 如果需要删除用户信息，可以取消注释以下代码
+    await user.destroy({ transaction });
+
+    await transaction.commit();
+    return { success: true };
+  }
 }
 
 module.exports = TeacherService;
