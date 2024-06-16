@@ -16,9 +16,8 @@ class TeacherService extends Service {
       await transaction.rollback(); // 回滚事务
       ctx.throw(400, '用户已存在');
     }
-    // 创建用户
-    const user = await app.model.Users.create(
-      { username, password, role: 'teacher' },
+    // 调用register接口注册
+    const user = await ctx.service.user.register({ username, password, confirmPassword: password, role: 'teacher' },
       { transaction }
     );
 

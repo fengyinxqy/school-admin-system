@@ -24,16 +24,16 @@ class TeacherController extends Controller {
 
   async createTeacher() {
     const { ctx, service } = this;
-    const { username, password, gender, subject } = ctx.request.body;
+    const { name, password, gender, subject } = ctx.request.body;
 
     ctx.validate({
-      username: { type: 'string', required: true },
+      name: { type: 'string', required: true },
       password: { type: 'string', required: false },
       gender: { type: 'enum', values: [ 'male', 'female' ], required: true },
       subject: { type: 'string', required: true },
     });
 
-    const result = await service.teacher.createTeacher({ username, password, gender, subject });
+    const result = await service.teacher.createTeacher({ username: name, password, gender, subject });
     ctx.success({ message: '创建成功', data: result });
   }
 
