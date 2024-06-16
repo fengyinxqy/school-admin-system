@@ -1,13 +1,8 @@
 <template>
   <div class="login-page">
     <el-container class="login-container">
-      <el-row
-        class="school-title"
-        justify="space-between"
-      >
-        <el-col
-          :span="24"
-        >
+      <el-row class="school-title" justify="space-between">
+        <el-col :span="24">
           <div class="school-name">
             <el-icon size="36">
               <School />
@@ -19,73 +14,31 @@
         </el-col>
       </el-row>
       <el-row class="login-card">
-        <el-col
-          :span="16"
-          class="hidden-xs-only "
-        >
-          <img
-            src="../assets/img/login_bg_pic.jpg"
-            alt="!"
-            class="login-img"
-          >
+        <el-col :span="16" class="hidden-xs-only">
+          <img src="../assets/img/login_bg_pic.jpg" alt="!" class="login-img" />
         </el-col>
-        <el-col
-          :xs="24"
-          :sm="8"
-          class="login-form-card"
-        >
-          <div class="form-title">
-            用户登录
-          </div>
-          <el-form
-            ref="formRef"
-            :model="form"
-            :rules="rules"
-          >
-            <el-form-item
-              class="form-item"
-              prop="username"
-            >
-              <el-input
-                v-model="form.username"
-                placeholder="用户名"
-              >
+        <el-col :xs="24" :sm="8" class="login-form-card">
+          <div class="form-title">用户登录</div>
+          <el-form ref="formRef" :model="form" :rules="rules">
+            <el-form-item class="form-item" prop="username">
+              <el-input v-model="form.username" placeholder="用户名">
                 <template #prepend>
-                  <el-icon>
-                    <Avatar />
-                  </el-icon>
+                  <i class="el-icon-user"></i>
                 </template>
               </el-input>
             </el-form-item>
-            <el-form-item
-              class="form-item"
-              prop="password"
-            >
-              <el-input
-                v-model="form.password"
-                placeholder="密码"
-              >
+            <el-form-item class="form-item" prop="password">
+              <el-input v-model="form.password" placeholder="密码">
                 <template #prepend>
-                  <el-icon>
-                    <Lock />
-                  </el-icon>
+                  <i class="el-icon-lock"></i>
                 </template>
               </el-input>
             </el-form-item>
             <el-form-item class="form-item forget-password">
-              <el-button
-                type="primary"
-                link
-              >
-                忘记密码？
-              </el-button>
+              <el-button type="text"> 忘记密码？ </el-button>
             </el-form-item>
             <el-form-item class="form-item">
-              <el-button
-                type="primary"
-                class="login-btn"
-                @click="submitForm"
-              >
+              <el-button type="primary" class="login-btn" @click="submitForm">
                 登录
               </el-button>
             </el-form-item>
@@ -96,59 +49,58 @@
   </div>
 </template>
 
-<script setup>
-import { ref,getCurrentInstance } from 'vue';
-import { Avatar, Lock } from '@element-plus/icons-vue'
-import { ElMessage } from 'element-plus';
-import { useUserStore } from '@/stores/user.js'
+<script>
+import { mapActions } from "pinia";
+import { useUserStore } from "@/stores/user";
 
-const { proxy } = getCurrentInstance();
-const userStore = useUserStore();
+export default {
+  name: "LoginPage",
 
-const form = ref({
-  username:'',
-  password:'',
-});
+  data() {
+    return {
+      form: {
+        username: "",
+        password: "",
+      },
+      rules: {
+        username: [
+          { required: true, message: "请输入用户名", trigger: "blur" },
+          { max: 16, message: "用户名不能超过16个字符", trigger: "blur" },
+        ],
+        password: [
+          { required: true, message: "请输入密码", trigger: "blur" },
+          { max: 16, message: "密码不能超过16个字符", trigger: "blur" },
+        ],
+      },
+    };
+  },
 
-const formRef = ref(null);
+  computed: {},
 
-const rules = {
-  username: [
-    { required: true, message: '请输入用户名', trigger: 'blur' },
-    { max: 16, message: '用户名不能超过16个字符', trigger: 'blur' }
-  ],
-  password: [
-    { required: true, message: '请输入密码', trigger: 'blur' },
-    { max: 16, message: '密码不能超过16个字符', trigger: 'blur' }
-  ]
-};
-
-const submitForm = () => {
-  formRef.value.validate((valid) => {
-    if (valid) {
-      // 这里处理表单提交逻辑
-      proxy.$axios.post('/login', form.value).then((res) => {
-        const userInfo = res.data;
-        // 存入到本地
-        userStore.setUserInfo(userInfo);
-        localStorage.setItem('userInfo', JSON.stringify(userInfo));
-        ElMessage.success('登录成功');
-        proxy.$router.push('/');
-      })
-    } else {
-      ElMessage.error('表单验证失败');
-    }
-  });
+  methods: {
+    ...mapActions(useUserStore, ["setUserInfo"]),
+    submitForm() {
+      this.$refs.formRef.validate((valid) => {
+        if (valid) {
+          this.$axios.post("/login", this.form).then((res) => {
+            const userInfo = res.data;
+            this.setUserInfo(userInfo);
+            this.$message.success("登录成功");
+            this.$router.push("/");
+          });
+        }
+      });
+    },
+  },
 };
 </script>
-
 <style lang="scss" scoped>
 .login-page {
   width: 100%;
   height: 100vh;
   display: flex;
   justify-content: center;
-  background-color: rgb(250, 250, 250);;
+  background-color: rgb(250, 250, 250);
 }
 
 .login-container {
@@ -158,10 +110,9 @@ const submitForm = () => {
   width: 100%;
   max-width: 1170px;
   margin: 0 15px;
-
 }
 
-.login-card{
+.login-card {
   width: 100%;
   border: 4px solid #ededed;
   border-radius: 4px;
@@ -171,45 +122,44 @@ const submitForm = () => {
 .school-title {
   width: 100%;
   margin: 25px 0px 45px;
-  color:rgb(16, 105, 164);
+  color: rgb(16, 105, 164);
 }
 
-.school-name{
+.school-name {
   display: flex;
   align-items: center;
   font-size: 24px;
 }
 
-.school-name-text{
+.school-name-text {
   margin-left: 10px;
 }
 
-.login-img{
+.login-img {
   width: 100%;
 }
 
-.login-form-card{
+.login-form-card {
   padding: 15px;
-  background-color:  rgba(255, 255, 255, .7);;
+  background-color: rgba(255, 255, 255, 0.7);
 }
 
-.form-title{
+.form-title {
   font-weight: bold;
   margin-bottom: 20px;
 }
 
-.form-item{
-  padding: 5px 15px;
+.form-item {
+  padding: 0 15px;
 }
 
-.forget-password{
-  padding-top: 5px;
-  :deep(.el-form-item__content){
+.forget-password {
+  ::deep .el-form-item__content {
     justify-content: flex-end;
   }
 }
 
-.login-btn{
+.login-btn {
   width: 100%;
 }
 

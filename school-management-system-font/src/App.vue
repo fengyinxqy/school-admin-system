@@ -3,30 +3,36 @@
     <router-view />
   </div>
 </template>
-<script setup>
-import { onMounted } from 'vue';
-import { useUserStore } from './stores/user';
 
-const userStore = useUserStore();
+<script>
+export default {
+  name: "SchoolManageSystemApp",
 
-onMounted(() => {
-  const localUserInfo = localStorage.getItem('userInfo');
-  if (localUserInfo) {
-    userStore.setUserInfo(JSON.parse(localUserInfo));
-  }
-});
+  data() {
+    return {};
+  },
+
+  mounted() {
+    // const localUserInfo = localStorage.getItem("userInfo");
+    // if (localUserInfo) {
+    //   userStore.setUserInfo(JSON.parse(localUserInfo));
+    // }
+  },
+
+  methods: {},
+};
 </script>
 <style lang="scss" scoped>
-.page-container{
+.page-container {
   height: 100vh;
 }
 
-.el-aside{
+.el-aside {
   background-color: #d9ecff;
 }
 
-.el-header,.el-footer{
+.el-header,
+.el-footer {
   background-color: #c6e2ff;
 }
 </style>
-  

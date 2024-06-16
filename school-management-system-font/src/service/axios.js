@@ -1,8 +1,8 @@
 // src/services/axios.js
 
 import axios from "axios";
-import { ElMessage } from "element-plus";
 import Cookies from "js-cookie";
+import { Message } from "element-ui";
 
 axios.defaults.withCredentials = true;
 
@@ -42,7 +42,7 @@ instance.interceptors.response.use(
       // 未授权，重定向到登录页
       window.location.href = "/login";
     }
-    ElMessage.error(response.data.message);
+    Message.error(response.data.message);
     return Promise.reject(response.data);
   }
 );

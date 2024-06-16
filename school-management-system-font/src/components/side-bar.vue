@@ -1,16 +1,8 @@
 <template>
-  <el-aside
-    :width="sideWidth"
-    class="side-bar"
-  >
+  <el-aside :width="sideWidth" class="side-bar">
     <h2 class="side-bar-title">
-      <el-icon><Collection /></el-icon>
-      <span
-        v-if="!isCollapse"
-        class="title-text"
-      >
-        教务管理系统
-      </span>
+      <i class="el-icon-menu"></i>
+      <span v-if="!isCollapse" class="title-text"> 教务管理系统 </span>
     </h2>
     <el-menu
       background-color="#304156"
@@ -25,128 +17,127 @@
         :index="item.path"
         @click="$router.push(item.path)"
       >
-        <el-icon v-if="item.icon">
-          <component :is="item.icon" />
-        </el-icon>
+        <i :class="item.icon"></i>
         <span class="menu-item-label">{{ item.name }}</span>
       </el-menu-item>
     </el-menu>
   </el-aside>
 </template>
 
-<script setup>
-import { useMenuStore } from '@/stores/menu.js';
-import { computed } from 'vue';
-import { Collection, Files, GoldMedal, Notification, Reading, School } from '@element-plus/icons-vue';
-import { DataAnalysis,User,UserFilled } from '@element-plus/icons-vue';
-import { useRoute } from 'vue-router';
+<script>
+import { useMenuStore } from "@/stores/menu";
+import { mapState } from "pinia";
 
-const menuStore = useMenuStore();
-const menuList = [
-  {
-    id: 1,
-    name:'数据大屏',
-    path:'/home',
-    icon: DataAnalysis
+export default {
+  name: "SideBar",
+  data() {
+    return {
+      menuList: [
+        {
+          id: 1,
+          name: "数据大屏",
+          path: "/home",
+          icon: "el-icon-data-analysis",
+        },
+        {
+          id: 2,
+          name: "学生管理",
+          path: "/student-manage",
+          icon: "el-icon-user-solid",
+        },
+        {
+          id: 3,
+          name: "教师管理",
+          path: "/teacher-manage",
+          icon: "el-icon-user",
+        },
+        {
+          id: 4,
+          name: "课程管理",
+          path: "/course-manage",
+          icon: "el-icon-reading",
+        },
+        {
+          id: 5,
+          name: "班级管理",
+          path: "/class-manage",
+          icon: "el-icon-school",
+        },
+        {
+          id: 6,
+          name: "成绩管理",
+          path: "/grade-manage",
+          icon: "el-icon-medal-1",
+        },
+        {
+          id: 7,
+          name: "通知公告",
+          path: "/notice-manage",
+          icon: "el-icon-message-solid",
+        },
+        {
+          id: 8,
+          name: "资源管理",
+          path: "/resource-manage",
+          icon: "el-icon-files",
+        },
+      ],
+    };
   },
-  {
-    id: 2,
-    name:'学生管理',
-    path:'/student-manage',
-    icon: User
+  computed: {
+    ...mapState(useMenuStore, ["isCollapse"]),
+    activeMenu() {
+      return this.$route.path;
+    },
+    sideWidth() {
+      return this.isCollapse ? "64px" : "200px";
+    },
   },
-  {
-    id: 3,
-    name:'教师管理',
-    path:'/teacher-manage',
-    icon: UserFilled
-  },
-  {
-    id: 4,
-    name:'课程管理',
-    path:'/course-manage',
-    icon: Reading
-  },
-  {
-    id: 5,
-    name:'班级管理',
-    path:'/class-manage',
-    icon: School
-  },
-  {
-    id: 6,
-    name:'成绩管理',
-    path:'/grade-manage',
-    icon:GoldMedal
-  },
-  {
-    id: 7,
-    name:'通知公告',
-    path:'/notice-manage',
-    icon:Notification
-  },
-  {
-    id: 8,
-    name:'资源管理',
-    path:'/resource-manage',
-    icon:Files
-  }
-]
-
-const router = useRoute()
-const activeMenu = router.path
-
-const isCollapse = computed(()=>{
-  return menuStore.isCollapsed
-})
-
-const sideWidth = computed(()=>{
-  return isCollapse.value ? '64px' : '200px'
-})
-
+};
 </script>
 
 <style lang="scss" scoped>
-.side-bar{
+.side-bar {
   height: 100%;
   transition: width 0.3s ease-in-out;
 }
 
-.el-aside.side-bar{
+.el-aside.side-bar {
   background-color: #304156;
 }
 
-.side-bar-title{
+.side-bar-title {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 50px;
   color: #fff;
+  margin: 0;
 }
 
-.title-text{
+.title-text {
   margin-left: 5px;
   transition: opacity 0.3s;
 }
 
-:deep .el-menu-item.is-active{
+:deep .el-menu-item.is-active {
   background-color: #243346;
 
-  .menu-item-label{
+  .menu-item-label {
     font-weight: 700;
   }
 }
 
-.el-menu-vertical{
+.el-menu-vertical {
   border-right: none;
 }
 
-.menu-item-label{
+.menu-item-label {
   font-size: 16px;
 }
 
-.menu-item-icon{
+.menu-item-icon {
   color: #fff;
-  font-size: 16px;;
+  font-size: 16px;
 }
 </style>

@@ -1,67 +1,60 @@
 <template>
-  <el-header
-    class="header"
-    height="50px"
-  >
+  <el-header class="header" height="50px">
     <el-button
       v-if="!isCollapse"
-      class="fold-btn"
-      icon="Fold"
-      link
+      class="fold-btn el-icon-s-fold"
+      type="text"
       @click="changeCollapse"
     />
     <el-button
       v-else
-      class="fold-btn"
-      icon="Expand"
-      link
+      class="fold-btn el-icon-s-unfold"
+      type="text"
       @click="changeCollapse"
     />
     <div class="header-right">
-      <span class="welcome">欢迎您，{{ username }}</span>
+      <span v-if="userInfo.username" class="welcome"
+        >欢迎您，{{ userInfo.username }}</span
+      >
       <el-dropdown trigger="click">
-        <el-avatar
-          :size="40"
-          :src="avatar"
-          class="header-avatar"
-        />
-        <template #dropdown>
-          <el-dropdown-menu>
-            <el-dropdown-item @click="logout">
-              <el-icon><SwitchButton /></el-icon>
+        <el-avatar :size="40" :src="avatar" class="header-avatar" />
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item>
+            <div @click="clearUserInfo">
+              <i class="el-icon-switch-button"></i>
               退出登录
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </template>
+            </div>
+          </el-dropdown-item>
+        </el-dropdown-menu>
       </el-dropdown>
     </div>
   </el-header>
 </template>
 
-<script setup>
+<script>
 import avatar from "@/assets/img/avatar.png";
-import { ref, computed } from "vue";
-import { useUserStore } from "@/stores/user.js";
-import { useMenuStore } from '@/stores/menu.js';
-const userStore = useUserStore();
+import { mapActions, mapState } from "pinia";
+import { useUserStore } from "@/stores/user";
+import { useMenuStore } from "@/stores/menu";
+export default {
+  name: "HeaderArea",
 
-const username = ref("");
-if (userStore.userInfo) {
-  username.value = userStore.userInfo.username || "";
-}
+  data() {
+    return {
+      avatar,
+      username: "",
+    };
+  },
 
-const logout = () => {
-  userStore.clearUserInfo();
-};
+  computed: {
+    ...mapState(useUserStore, ["userInfo"]),
+    ...mapState(useMenuStore, ["isCollapse"]),
+  },
 
-const menuStore = useMenuStore();
-
-const isCollapse = computed(()=>{
-  return menuStore.isCollapsed
-})
-
-const changeCollapse = () => {
-  menuStore.updateCollapse()
+  methods: {
+    ...mapActions(useMenuStore, ["changeCollapse"]),
+    ...mapActions(useUserStore, ["clearUserInfo"]),
+  },
 };
 </script>
 

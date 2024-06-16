@@ -1,10 +1,15 @@
-import { createRouter, createWebHistory } from "vue-router";
+import Vue from "vue";
+import VueRouter from "vue-router";
 import Cookies from "js-cookie";
-import HomeView from "../views/HomeView.vue";
+
+import HomeView from "../views/home-view.vue";
 import LoginPage from "../views/login-page.vue";
 
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+Vue.use(VueRouter);
+
+const router = new VueRouter({
+  mode: "history",
+  base: import.meta.env.BASE_URL,
   routes: [
     {
       path: "/",
@@ -18,7 +23,7 @@ const router = createRouter({
         {
           path: "/teacher-manage",
           name: "teacherManage",
-          component: () => import("../views/teacher/teacher-manage.vue"),
+          component: () => import("../views/teacher/teacher-manager.vue"),
         },
       ],
     },
