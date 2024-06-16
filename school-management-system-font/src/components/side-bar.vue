@@ -2,7 +2,9 @@
   <el-aside :width="sideWidth" class="side-bar">
     <h2 class="side-bar-title">
       <i class="el-icon-menu"></i>
-      <span v-if="!isCollapse" class="title-text"> 教务管理系统 </span>
+      <transition name="el-fade-in-linear">
+        <span v-if="!isCollapse" class="title-text"> 教务管理系统 </span>
+      </transition>
     </h2>
     <el-menu
       background-color="#304156"
@@ -35,8 +37,8 @@ export default {
       menuList: [
         {
           id: 1,
-          name: "数据大屏",
-          path: "/home",
+          name: "首页",
+          path: "/data-analysis",
           icon: "el-icon-data-analysis",
         },
         {
@@ -117,11 +119,10 @@ export default {
 
 .title-text {
   margin-left: 5px;
-  transition: opacity 0.3s;
 }
 
-:deep .el-menu-item.is-active {
-  background-color: #243346;
+::v-deep .el-menu-item.is-active {
+  background-color: #243346 !important;
 
   .menu-item-label {
     font-weight: 700;

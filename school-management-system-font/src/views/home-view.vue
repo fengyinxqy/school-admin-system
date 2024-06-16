@@ -1,12 +1,11 @@
 <template>
   <el-container class="page-container">
     <side-bar />
-    <el-container>
+    <el-container class="main-container">
       <header-area />
       <el-main>
         <router-view />
       </el-main>
-      <el-footer>Footer</el-footer>
     </el-container>
   </el-container>
 </template>
@@ -34,11 +33,14 @@ export default {
 }
 
 .el-main {
-  background-color: #fff;
+  background-color: #f7f7f7;
 }
 
-.el-header,
-.el-footer {
+.el-header {
   background-color: #c6e2ff;
+}
+
+.main-container {
+  flex-direction: column;
 }
 </style>

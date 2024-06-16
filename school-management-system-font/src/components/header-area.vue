@@ -1,17 +1,21 @@
 <template>
   <el-header class="header" height="50px">
-    <el-button
-      v-if="!isCollapse"
-      class="fold-btn el-icon-s-fold"
-      type="text"
-      @click="changeCollapse"
-    />
-    <el-button
-      v-else
-      class="fold-btn el-icon-s-unfold"
-      type="text"
-      @click="changeCollapse"
-    />
+    <div class="header-left">
+      <el-button
+        v-if="!isCollapse"
+        class="fold-btn el-icon-s-fold"
+        type="text"
+        @click="changeCollapse"
+      />
+      <el-button
+        v-else
+        class="fold-btn el-icon-s-unfold"
+        type="text"
+        @click="changeCollapse"
+      />
+      学校管理系统
+    </div>
+
     <div class="header-right">
       <span v-if="userInfo.username" class="welcome"
         >欢迎您，{{ userInfo.username }}</span
@@ -67,10 +71,13 @@ export default {
 }
 
 .fold-btn {
-  font-size: 20px;
+  font-size: 25px;
+  color: black;
+  margin-left: 5px;
 }
 
-.header-right {
+.header-right,
+.header-left {
   display: flex;
   align-items: center;
 }

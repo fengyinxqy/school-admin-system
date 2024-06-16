@@ -13,13 +13,18 @@ const router = new VueRouter({
   routes: [
     {
       path: "/",
-      redirect: "/home",
+      redirect: "/data-analysis",
     },
     {
       path: "/home",
       name: "home",
       component: HomeView,
       children: [
+        {
+          path: "/data-analysis",
+          name: "dataAnalysis",
+          component: () => import("../views/home/home-area.vue"),
+        },
         {
           path: "/teacher-manage",
           name: "teacherManage",

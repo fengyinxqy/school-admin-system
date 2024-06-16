@@ -10,7 +10,7 @@ import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 
 Vue.use(PiniaVuePlugin);
-Vue.use(ElementUI, { zIndex: 3000 });
+Vue.use(ElementUI, { size: "small", zIndex: 3000 });
 
 Vue.prototype.$axios = instance;
 

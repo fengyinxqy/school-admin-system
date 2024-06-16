@@ -1,5 +1,34 @@
 <template>
   <div>
+    <el-container class="teacher-header">
+      <div class="teacher-search">
+        <div class="search-item">
+          <span class="search-label">姓名</span>
+          <el-input
+            v-model="inputName"
+            placeholder="请输入内容"
+            class="search-input"
+          ></el-input>
+        </div>
+        <div class="search-item">
+          <span class="search-label">学科</span>
+          <el-select v-model="subject" placeholder="请选择">
+            <el-option
+              v-for="item in subjectMap"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </div>
+      </div>
+      <el-divider class="divider"></el-divider>
+      <div>
+        <el-button type="primary">查询</el-button>
+        <el-button>重置</el-button>
+      </div>
+    </el-container>
     <el-container class="teacher-main">
       <div class="table-title">
         <span class="title"> 教师管理 </span>
@@ -10,15 +39,11 @@
       <div class="table-content">
         <el-table
           v-loading="tableDataLoading"
-          :data="
-            tableData.filter(
-              (data) =>
-                !search ||
-                data.name.toLowerCase().includes(search.toLowerCase())
-            )
-          "
+          border
+          :data="tableData"
           style="width: 100%"
         >
+          <el-table-column label="序号" type="index" align="center" />
           <el-table-column
             v-for="config in teacherTableConfig"
             :key="config.label"
@@ -26,14 +51,7 @@
             :prop="config.prop"
             align="center"
           />
-          <el-table-column align="right">
-            <template #header>
-              <el-input
-                v-model="search"
-                size="small"
-                placeholder="输入关键字搜索"
-              />
-            </template>
+          <el-table-column align="center" label="操作">
             <template #default="{ row }">
               <el-button size="small" @click="openDialog('edit', row)">
                 编辑
@@ -53,12 +71,15 @@
         </div>
       </div>
     </el-container>
-    <teacher-info-dialog ref="teacherInfoDialog"></teacher-info-dialog>
+    <teacher-info-dialog
+      ref="teacherInfoDialog"
+      @add-teacher="handleAddTeacher"
+    ></teacher-info-dialog>
   </div>
 </template>
 
 <script>
-import { teacherTableConfig } from "./teacher.config";
+import { teacherTableConfig, subjectMap } from "./teacher.config";
 import dayjs from "dayjs";
 import TeacherInfoDialog from "./components/teacher-info-dialog.vue";
 export default {
@@ -71,6 +92,9 @@ export default {
       tableData: [],
       search: "",
       tableDataLoading: false,
+      subject: "",
+      inputName: "",
+      subjectMap,
     };
   },
 
@@ -122,6 +146,9 @@ export default {
           });
         });
     },
+    handleAddTeacher() {
+      this.getTeacherList();
+    },
   },
 };
 </script>
@@ -170,5 +197,34 @@ export default {
   padding-left: 20px;
   margin-top: 10px;
   color: #e6a23c;
+}
+
+.teacher-search {
+  display: flex;
+  align-items: center;
+}
+
+.teacher-header {
+  flex-direction: column;
+  background-color: #fff;
+  width: 100%;
+  padding: 10px;
+}
+
+.search-label {
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.search-item {
+  margin-right: 20px;
+}
+
+.search-input {
+  width: 200px;
+}
+
+.divider {
+  margin: 10px 0;
 }
 </style>

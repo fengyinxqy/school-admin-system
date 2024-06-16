@@ -1,6 +1,10 @@
 <template>
   <div>
-    <el-dialog :visible.sync="dialogFormVisible" :title="dialogTitle">
+    <el-dialog
+      :visible.sync="dialogFormVisible"
+      :title="dialogTitle"
+      width="400px"
+    >
       <el-form ref="dialogForm" :model="form" :rules="rules">
         <el-form-item
           label="姓名"
@@ -8,7 +12,11 @@
           prop="name"
           class="form-item"
         >
-          <el-input v-model="form.name" :disabled="type === 'edit'" />
+          <el-input
+            v-model="form.name"
+            :disabled="type === 'edit'"
+            class="dialog-input"
+          />
         </el-form-item>
 
         <el-form-item
@@ -88,8 +96,17 @@ export default {
     confirm() {
       this.$refs.dialogForm.validate((valid) => {
         if (valid) {
+          const { id, name, gender, subject } = this.form;
+          const params = {
+            id,
+            name,
+            subject,
+            gender: gender === "男" ? "male" : "female",
+          };
           const method = this.type === "add" ? "post" : "put";
-          this.$axios[method]("/teachers", this.form).then(() => {
+          this.$axios[method]("/teachers", params).then((res) => {
+            this.$message.success(res.message);
+            this.$emit("add-teacher");
             this.dialogFormVisible = false;
           });
         }
@@ -98,3 +115,14 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.dialog-input {
+  width: 200px;
+}
+
+.dialog-tip {
+  padding-left: 20px;
+  color: #e6a23c;
+}
+</style>
